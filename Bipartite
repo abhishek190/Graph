@@ -1,3 +1,10 @@
+/*
+Bipartite graph G=(L,R) consists of two disjoint sets L and R,and a set of edge with one vertex in L and one in R.
+observations
+1.2 -colourable
+2.No odd length cycles
+3.L,R sometimes included in def
+/*
 #include<bits/stdc++.h>
 using namespace std;
 int n,v;
