@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,v;
+unordered_map<int,vector<int>>mp;
+vector<bool>visited;
+bool connected(int u,int parent){
+    visited[u]=true;
+    for(auto itr:mp[u]){
+        if(!visited[itr]){
+            connected(itr,u);
+        }
+        else if(itr!=parent){
+            return true;
+        }
+    }
+    return false;
+}
+bool dfsUtil(){
+    visited.assign(n,false);
+    for(int i=0;i<n;i++){
+        if(visited[i]==false){
+            if(connected(i,-1)){return true;}
+        }
+    }
+    return false;
+}
+int main()
+{
+    cin>>n>>v;
+    for(int i=0;i<v;i++){
+        int x,y;
+        cin>>x>>y;
+        mp[x].push_back(y);
+        mp[y].push_back(x);
+    }
+    if(dfsUtil()){cout<<"Cyclic"<<endl;}
+    else{
+        cout<<"Non Cyclic"<<endl;
+    }
+	return(0);
+}
