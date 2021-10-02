@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,v;
+unordered_map<int,vector<int>>mp;
+vector<bool>visited;
+vector<int>color;
+bool connected(int u,int parent,int parentColor){
+    visited[u]=true;
+    color[u]=parentColor;
+    for(auto itr:mp[u]){
+        if(!visited[itr]){
+            connected(itr,u,1-parentColor);
+        }
+        else if(color[itr]==parentColor){
+            return false;
+        }
+    }
+    return true;
+}
+bool dfsUtil(){
+    visited.assign(n,false);
+    color.assign(n,-1);
+    for(int i=0;i<n;i++){
+        if(visited[i]==false){
+            if(connected(i,-1,0)){return true;}
+        }
+    }
+    return false;
+}
+int main()
+{
+    cin>>n>>v;
+    for(int i=0;i<v;i++){
+        int x,y;
+        cin>>x>>y;
+        mp[x].push_back(y);
+        mp[y].push_back(x);
+    }
+    if(dfsUtil()){
+        cout<<"Bipartite"<<endl;
+    }
+    else{
+        cout<<"Not Bipartite"<<endl;
+    }
+    
+    for(int i=0;i<n;i++){
+        cout<<color[i]<<" ";
+    }
+	return(0);
+}
