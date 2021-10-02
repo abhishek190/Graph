@@ -1,0 +1,48 @@
+/* 
+We cant use same algorithm like undirected graph because self loop in undirected graph is treated as single edge but in directed graph it is different edge 
+vertices which is visited but not parent found then cycle is detected :=Algorithm for Undirected graph but this will give false result in self loop of directed graph 
+*/
+#include<bits/stdc++.h>
+using namespace std;
+int n,v;
+unordered_map<int,vector<int>>mp;
+vector<bool>visited;
+vector<bool>dfsCheck;
+bool cycle(int u){
+    visited[u]=dfsCheck[u]=true;
+    for(auto itr:mp[u]){
+        if(visited[itr]==false){
+            if(cycle(itr)){return true;}
+        }
+        else if(dfsCheck[itr]){
+            return true;
+        }
+    }
+    dfsCheck[u]=false;
+    return false;
+}
+bool dfsUtil(){
+    visited.assign(n,false);
+    dfsCheck.assign(n,false);
+    for(int i=0;i<n;i++){
+        if(visited[i]==false){
+            if(cycle(i)){return true;}
+        }
+    }
+    return false;
+}
+int main()
+{
+    cin>>n>>v;
+    for(int i=0;i<v;i++){
+        int x,y;
+        cin>>x>>y;
+        mp[x].push_back(y);
+        mp[y].push_back(x);
+    }
+    if(dfsUtil()){cout<<"Cyclic"<<endl;}
+    else{
+        cout<<"Non Cyclic"<<endl;
+    }
+	return(0);
+}
