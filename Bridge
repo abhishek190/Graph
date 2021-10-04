@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,v;
+unordered_map<int,vector<int>>mp;
+vector<bool>visited;
+vector<int>low,tin;
+int timer;
+void dfs(int u,int parent){
+    cout<<u<<endl;
+    low[u]=tin[u]=timer++;
+    visited[u]=true;
+    for(auto v:mp[u]){
+        if(v==parent){continue;}
+        if(!visited[v]){
+            dfs(v,u);
+            low[u]=min(low[u],low[v]);
+            if(low[v]>tin[u]){
+            }
+        }
+        else{
+            low[u]=min(low[u],tin[v]);
+        }
+    }
+    
+}
+void dfsUtil(){
+    timer=0;
+    visited.assign(n,false);
+    low.assign(n,false);
+    tin.assign(n,false);
+    for(int i=0;i<n;i++){
+        if(visited[i]==false){
+            dfs(i,-1);
+        }
+    }
+}
+int main()
+{
+	cin>>n>>v;
+	for(int i=0;i<v;i++){
+	    int x,y;
+	    cin>>x>>y;
+	    mp[x].push_back(y);
+	    mp[y].push_back(x);
+	}
+	dfsUtil();
+	return(0);
+}
