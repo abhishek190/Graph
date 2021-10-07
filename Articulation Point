@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<bool>arti;
+vector<bool>visited;
+vector<int>disc,low;
+int timer=0;
+void dfs(unordered_map<int,vector<int>>adj,int u,int parent=-1){
+        low[u]=disc[u]=timer++;
+        int child=0;
+        visited[u]=true;
+        for(auto itr:adj[u]){
+            if(itr==parent){continue;}
+            if(!visited[itr]){
+                dfs(adj,itr,u);
+                child++;
+                low[u]=min(low[u],low[itr]);
+                if(low[itr]>=disc[u]&& parent!=-1){
+                    arti[u]=1;
+                }
+            }
+            else{
+                low[u]=min(low[u],disc[itr]);
+            }
+        }
+        if(parent==-1 && child>1){
+            arti[u]=1;
+        }
+    }
+void articulationPoints(int V, unordered_map<int,vector<int>>adj) {
+        arti.assign(V,0);
+        visited.assign(V,false);
+        disc.assign(V,false);
+        low.assign(V,false);
+        timer=0;
+        for(int i=0;i<V;i++){
+            if(!visited[i]){
+                dfs(adj,i);
+            }
+        }
+        for(int i=0;i<V;i++){
+            if(arti[i]){
+                cout<<i<<" ";
+            }
+        }
+}
+int main(){
+    int n,v;
+    cin>>n>>v;
+    unordered_map<int,vector<int>>mp;
+    for(int i=0;i<v;i++){
+        int x,y;
+        cin>>x>>y;
+        mp[x].push_back(y);
+        mp[y].push_back(x);
+    }
+    articulationPoints(n,mp);
+}
